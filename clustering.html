@@ -1,0 +1,102 @@
+<!-- EXTERNAL REFERENCES:
+https://www.d3-graph-gallery.com/index.html
+https://www.d3indepth.com/force-layout/
+https://d3-wiki.readthedocs.io/zh_CN/master/Force-Layout/
+https://github.com/WYanChao/RadViz
+https://github.com/biovisualize/radviz
+https://www3.cs.stonybrook.edu/~shecheng/Paper/processes.pdf
+https://bl.ocks.org/EfratVil/2bcc4bf35e28ae789de238926ee1ef05   -->
+
+<html>
+    <head>
+            <script type = "text/javascript" src = "https://d3js.org/d3.v3.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+             <script src="../static/cluster.js"></script>
+            <script src="../static/component-utils.js"></script>
+            <script src="../static/tooltip-component.js"></script>
+           <!-- <script src="../static/tooltip-component_h.js"></script> -->
+            <link rel="stylesheet" type="text/css" href="../static/mystyles.css">
+
+
+
+    </head>
+
+    <body>
+    <div class="home">
+    <a href="http://localhost:5000/d3_flask/">Homepage</a>
+    </div>
+        <div class="container_new"></div>
+
+    <div class="canvas">
+    <canvas id="myCanvas" width="500" height="200" style="border:1px solid #d3d3d3;">
+    </canvas>
+    </div>
+
+
+   <!--  <input type="submit" value="Start" onclick="submit()"> -->
+
+     <script>
+
+     var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+ctx.font = "20px Arial";
+ctx.fillText("1. Hover over any of the cluster",10,50);
+ctx.fillText("2. Select a data point, drag and drop anywhere",10,100);
+ctx.fillText("3. Compare data points from the 2 clusters",10,150);
+
+
+   function cluster() {
+    var data = JSON.stringify({
+  "n_clusters": 3
+});
+
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function () {
+  if (this.readyState === 4) {
+    console.log(this.responseText);
+  }
+});
+
+xhr.open("POST", "http://localhost:5000/d3_flask/cluster/new");
+xhr.setRequestHeader("content-type", "application/json");
+xhr.setRequestHeader("cache-control", "no-cache");
+xhr.setRequestHeader("postman-token", "5b8d815b-8ce8-3d53-188b-cfd6957260af");
+
+xhr.send(data);
+    };
+
+    // var dimensions = ['prediction'];
+     var dimensions = ['acousticness', 'danceability', 'energy', 'instrumentalness','liveness','loudness','speechiness','tempo','valence','artist'];
+     var radviz = mainChart()
+     .config({
+                el: document.querySelector('.container_new'),
+
+                dimensions: dimensions,
+                size: 600,
+                margin: 100,
+                useRepulsion: true,
+                drawLinks: false,
+                tooltipFormatter: function(d) {
+                return '<h1>' + '</h1>' + dimensions.map(function(dB) {
+                return dB + ': ' + d[dB];
+                }).join('<br />');
+                }
+            });
+
+
+    d3.csv("/static/predictedn2.csv", function(error, data){
+    //console.log(data);
+    radviz.render(data);
+});
+
+
+
+
+
+     </script>
+
+    </body>
+</html>

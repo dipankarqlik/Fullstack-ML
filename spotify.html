@@ -1,0 +1,179 @@
+<!-- EXTERNAL REFERENCES:
+https://www.d3-graph-gallery.com/index.html
+https://www.d3indepth.com/force-layout/
+https://d3-wiki.readthedocs.io/zh_CN/master/Force-Layout/
+https://www3.cs.stonybrook.edu/~shecheng/Paper/processes.pdf
+https://bl.ocks.org/EfratVil/2bcc4bf35e28ae789de238926ee1ef05   -->
+
+<html>
+    <head>
+            <script type = "text/javascript" src = "https://d3js.org/d3.v3.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+             <script src="../static/spotify.js"></script>
+           <!-- <script src="../static/scatter.js"></script> -->
+            <script src="../static/component-utils.js"></script>
+            <script src="../static/tooltip-component.js"></script>
+            <link rel="stylesheet" type="text/css" href="../static/mystyles.css">
+
+        <style>
+            div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 100px;
+    height: 48px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    poi
+    }
+        </style>
+
+
+    </head>
+
+    <body>
+    <div class="bg">
+        <div class="images">
+                    <img src="../static/bar.png" width="900" height="80">
+                   <!-- <img src="../static/spot.png" width="250" height="100"> -->
+                  </div>
+        <div class="image2">
+            <img src="../static/spotify.png" width="110" height="80">
+
+        </div>
+
+        <div class="container"></div>
+
+        <div class="my_dataviz">
+                        <svg id="my_dataviz" height=350 width=500></svg>
+                    </div>
+
+        <div class="my_dataviz2">
+                        <svg id="my_dataviz2" height=350 width=500></svg>
+                    </div>
+
+        <div class="my_dataviz3">
+                        <svg id="my_dataviz3" height=350 width=500></svg>
+                    </div>
+
+        <div class="opacity">
+            <label>Control Opacity: </label>
+            <input id ="slider" type="range" min="0" max="50" value="50" style="width: 200px; margin-right: 10px;"/>
+        </div>
+
+       <div class="formnew">
+      <form method=post action="/d3_flask/uploadfile" enctype=multipart/form-data>
+          <b>File:</b> <input type="file" method="POST" name="file">
+          <input type="submit" class="button" value="upload"> </form>
+</div>
+
+        <div class ="parallel">
+             <label>Parallel Coordinates: </label>
+            <a href="http://localhost:5000/d3_flask/parallel"><b> Visualize here</b></a>
+        </div>
+
+
+         <div class="clusters">
+            <input type="submit" value="Group Similar Tracks" onclick="cluster2()">
+        <a href="http://localhost:5000/d3_flask/cl"><b>Check Clustering results</b></a>
+        <br><br>
+        </div>
+
+        <div class ="color">
+        <button onclick="changeColor(d3.scale.category10())">Change to one color</button>
+        </div>
+
+
+       <br><br>
+
+
+        <div id = "demo" class="demo">
+
+        </div>
+
+    </div>
+
+     <script>
+
+       function changeColor(color){
+  d3.selectAll("circle.dot")
+    .transition()
+    .duration(2000)
+    .style("fill", color)
+}
+
+     function cluster2() {
+    var data = JSON.stringify({
+  "n_clusters": 2
+});
+
+var xhr = new XMLHttpRequest();
+xhr.withCredentials = true;
+
+xhr.addEventListener("readystatechange", function () {
+  if (this.readyState === 4) {
+    //console.log(this.responseText);
+    alert(xhr.response);
+  }
+});
+
+xhr.open("POST", "http://localhost:5000/d3_flask/cluster/new");
+xhr.setRequestHeader("content-type", "application/json");
+xhr.setRequestHeader("cache-control", "no-cache");
+xhr.setRequestHeader("postman-token", "5b8d815b-8ce8-3d53-188b-cfd6957260af");
+
+xhr.send(data);
+    };
+
+    var dimensions = ['acousticness', 'danceability', 'energy', 'instrumentalness','liveness','loudness','speechiness','tempo','valence'];
+    var dim1 = ['acousticness', 'energy'];
+    var dim2 = ['loudness', 'energy'];
+    var dim3 = ['loudness', 'danceability']
+     var radviz = mainChart()
+     .config({
+                el: document.querySelector('.container'),
+                dimensions: dimensions,
+                size: 600,
+                margin: 100,
+                useRepulsion: true,
+                drawLinks: false,
+                tooltipFormatter: function(d) {
+                    return '<h1>' +  '</h1>' + dimensions.map(function(dB) {
+                        return dB + ': ' + d[dB];
+                    }).join('<br />');
+                },
+
+                tooltipFormattern: function(d) {
+                    return '<h1>' +  '</h1>' + dim1.map(function(dB) {
+                        return dB + ': ' + d[dB];
+                    }).join('<br />');
+                },
+
+                tooltipFormatterm: function(d) {
+                    return '<h1>' +  '</h1>' + dim2.map(function(dB) {
+                        return dB + ': ' + d[dB];
+                    }).join('<br />');
+                },
+
+                tooltipFormattero: function(d) {
+                    return '<h1>' +  '</h1>' + dim3.map(function(dB) {
+                        return dB + ': ' + d[dB];
+                    }).join('<br />');
+                }
+
+            });
+
+
+    d3.csv('../static/spotify_base.csv', function(error, data){
+    radviz.render(data);
+});
+
+
+
+     </script>
+
+    </body>
+</html>
