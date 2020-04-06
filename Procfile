@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: gunicorn d3_flask:d3_flask
