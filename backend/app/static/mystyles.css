@@ -1,1 +1,158 @@
+body,html {
+    margin: 0;
+    font-family: Georgia;
+}
+.bg {
+    /* The image used */
+    background-image: url("../static/grey.jpg");
 
+    /* Full height */
+    height: 1000px;
+    width: 1000px;
+    /* Center and scale the image nicely */
+
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-attachment: scroll;
+  }
+.container{
+left: -250px;
+top: 200px;
+position: relative;
+}
+
+.panel {
+    stroke: black;
+    fill: white;
+}
+.bg {
+    fill: white;
+}
+.link {
+    stroke: silver;
+    stroke-opacity: 0.05
+}
+.dot {
+    fill-opacity: 0.5;
+}
+.label-node {
+    fill: silver;
+}
+.active {
+    stroke: black;
+}
+.label {
+    fill: gray;
+    pointer-events: none;
+}
+.container {
+width:500;
+height:500;
+top:-80px;
+position:relative;
+}
+#radviz-tooltip {
+    font-size: 12px;
+    margin-top: 22px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 4px;
+}
+#radviz-tooltip h1 {
+    font-size: 14px;
+    margin: 0;
+}
+.images{
+left: 100px;
+position:relative;
+}
+.image2{
+top:-80px;
+position:relative;
+}
+.clusters{
+top: -1450px;
+left: 600px;
+position:relative;
+}
+
+.formnew{
+top:-1430px;
+left: 600px;
+position: relative;
+}
+
+.button{
+top:0px;
+left: -100px;
+position: relative;
+}
+
+.home{
+top:50px;
+left: 60px;
+position:relative;
+}
+.containernew{
+top:200px;
+left:200px;
+position:relative;
+}
+.my_dataviz{
+top:-20px;
+left: 50px;
+position:relative;
+}
+
+.my_dataviz2{
+top:-370px;
+left: 380px;
+position:relative;
+}
+
+.my_dataviz3{
+top:-720px;
+left: 700px;
+position:relative;
+}
+
+.opacity{
+top: -1450px;
+left: 600px;
+position:relative;
+}
+
+.demo{
+top: -1800px;
+left: 600px;
+position:relative;
+}
+
+.parallel{
+top:-1370px;
+left: 600px;
+position: relative;
+}
+
+.color{
+top:-1400px;
+left: 600px;
+position: relative;
+}
+
+.colornew{
+top:-1370px;
+left: 600px;
+position: relative;
+}
+
+.canvas{
+top:300px;
+left: 550px;
+position: relative;
+}
+
+.container_new{
+top:300px;
+left: 550px;
+position: relative;
+}
